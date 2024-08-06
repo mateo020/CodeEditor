@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@auth/mongodb-adapter": "^3.4.2",
     "@chakra-ui/react": "^2.8.2",
     "@liveblocks/client": "^2.4.0",
     "@liveblocks/node": "^2.4.0",
@@ -16,7 +17,9 @@
     "@liveblocks/yjs": "^2.4.0",
     "@monaco-editor/react": "^4.6.0",
     "axios": "^1.7.2",
+    "mongodb": "^6.8.0",
     "next": "14.2.5",
+    "next-auth": "^4.24.7",
     "react": "^18",
     "react-dom": "^18",
     "y-monaco": "^0.1.6",

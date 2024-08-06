@@ -4,7 +4,7 @@ import Editor from '@monaco-editor/react';
 import { Box, HStack} from '@chakra-ui/react';
 import LanguageSelector from "./LanguageSelector";
 import { CODE_SNIPPETS, LANGUAGE_VERSIONS } from "../constants/constants";
-
+import { createClient } from "@liveblocks/client";
 import Output from "./Output";
 
 
@@ -19,9 +19,15 @@ import { MonacoBinding } from "y-monaco";
 import { Awareness } from "y-protocols/awareness";
 // import { Cursors } from "./Cursors";
 // import { Toolbar } from "./Toolbar";
+const roomId = "liveblocks-tutorial-nx5iWVYRzDivq03oL1v_m";
+
 
 type Language = keyof typeof LANGUAGE_VERSIONS;
+const client = createClient({
+  publicApiKey: "pk_dev_VCh7d4WcySNap5Xmb-zpjamfLzahUsquAlF5FYiQ3sS09DygPBuK1v_4ltOtXA-N-N",
+});
 
+const { room, leave } = client.enterRoom("your-room-id");
 // Collaborative code editor with undo/redo, live cursors, and live avatars
 export function CollaborativeEditor() {
   // const room = useRoom();
@@ -34,8 +40,8 @@ export function CollaborativeEditor() {
 
   // Set up Liveblocks Yjs provider and attach Monaco editor
   // useEffect(() => {
-  //   let yProvider: LiveblocksYjsProvider;
-  //   let yDoc: Y.Doc;
+    let yProvider: LiveblocksYjsProvider;
+    let yDoc: Y.Doc;
   //   let binding: MonacoBinding;
 
     
