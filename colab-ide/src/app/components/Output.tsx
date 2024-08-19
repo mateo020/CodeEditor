@@ -1,15 +1,16 @@
 import { useState } from "react";
 import { Box, Button, Text, useToast } from "@chakra-ui/react";
-import { executeCode } from "../api/api"
+import { executeCode } from "../api/api";
 import { editor } from "monaco-editor";
-import { LANGUAGE_VERSIONS } from "../constants/constants"
-
+import { LANGUAGE_VERSIONS } from "../constants/constants";
 
 type Language = keyof typeof LANGUAGE_VERSIONS;
+
 interface OutputProps {
-    editorRef: React.RefObject<editor.IStandaloneCodeEditor|undefined >;
-    language: Language;
-  }
+  editorRef: React.RefObject<editor.IStandaloneCodeEditor | null>;
+  language: Language;
+}
+
 const Output: React.FC<OutputProps> = ({ editorRef, language }) => {
   const toast = useToast();
   const [output, setOutput] = useState<string[]>();
@@ -18,8 +19,8 @@ const Output: React.FC<OutputProps> = ({ editorRef, language }) => {
 
   const runCode = async () => {
     if (!editorRef.current) return; // Ensure editorRef.current is not null
-    const sourceCode = editorRef.current.getValue(); 
-    
+    const sourceCode = editorRef.current.getValue();
+
     if (!sourceCode) return;
     try {
       setIsLoading(true);
@@ -27,13 +28,12 @@ const Output: React.FC<OutputProps> = ({ editorRef, language }) => {
       setOutput(result.output.split("\n"));
       result.stderr ? setIsError(true) : setIsError(false);
     } catch (error) {
-
-        let message = "Unable to run code";
-        if (error instanceof Error) {
-          message = error.message;
-        } else if (typeof error === "string") {
-          message = error;
-        }
+      let message = "Unable to run code";
+      if (error instanceof Error) {
+        message = error.message;
+      } else if (typeof error === "string") {
+        message = error;
+      }
 
       console.log(error);
       toast({
@@ -76,4 +76,5 @@ const Output: React.FC<OutputProps> = ({ editorRef, language }) => {
     </Box>
   );
 };
+
 export default Output;

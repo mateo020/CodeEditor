@@ -1,10 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
-import { useSelf } from "@liveblocks/react/suspense";
-import { AwarenessList, UserAwareness } from "../../../liveblocks.config";
-import { LiveblocksYjsProvider } from "@liveblocks/yjs";
+import {
+  AwarenessList,
+  TypedLiveblocksProvider,
+  UserAwareness,
+  useSelf,
+} from "../../../liveblocks.config";
 
 type Props = {
-  yProvider: LiveblocksYjsProvider;
+  yProvider: TypedLiveblocksProvider;
 };
 
 export function Cursors({ yProvider }: Props) {
@@ -15,14 +18,15 @@ export function Cursors({ yProvider }: Props) {
 
   useEffect(() => {
     // Add user info to Yjs awareness
-    const localUser: UserAwareness["user"] = userInfo;
-    yProvider.awareness.setLocalStateField("user", localUser);
+    if (userInfo) {
+        const localUser: UserAwareness["user"] = userInfo; // Ensure userInfo is not undefined
+        yProvider.awareness.setLocalStateField("user", localUser);
+      }
 
     // On changes, update `awarenessUsers`
     function setUsers() {
       setAwarenessUsers([...yProvider.awareness.getStates()] as AwarenessList);
     }
-
     yProvider.awareness.on("change", setUsers);
     setUsers();
 
@@ -38,11 +42,11 @@ export function Cursors({ yProvider }: Props) {
     for (const [clientId, client] of awarenessUsers) {
       if (client?.user) {
         cursorStyles += `
-          .yRemoteSelection-${clientId}, 
+          .yRemoteSelection-${clientId},
           .yRemoteSelectionHead-${clientId}  {
-            --user-color: ${client.user.color || "orangered"};
+            --user-color: ${client.user.color};
           }
-          
+
           .yRemoteSelectionHead-${clientId}::after {
             content: "${client.user.name}";
           }

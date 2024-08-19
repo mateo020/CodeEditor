@@ -2,22 +2,33 @@ import styles from "./Toolbar.module.css";
 import { editor } from "monaco-editor";
 
 type Props = {
-  editor: editor.IStandaloneCodeEditor;
+  editorRef: React.RefObject<editor.IStandaloneCodeEditor | null>;
 };
 
-export function Toolbar({ editor }: Props) {
+
+export function Toolbar({ editorRef }: Props) {
+  
   return (
     <div className={styles.toolbar}>
       <button
         className={styles.button}
-        onClick={() => editor.trigger("", "undo", null)}
+        onClick={() => {
+          if (editorRef.current) {
+            editorRef.current.trigger("", "undo", null);
+          }
+        }}
+
         aria-label="undo"
       >
         <UndoIcon />
       </button>
       <button
         className={styles.button}
-        onClick={() => editor.trigger("", "redo", null)}
+        onClick={() => {
+          if (editorRef.current) {
+            editorRef.current.trigger("", "redo", null);
+          }
+        }}
         aria-label="redo"
       >
         <RedoIcon />
